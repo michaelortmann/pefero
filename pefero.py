@@ -542,8 +542,11 @@ root.iconphoto(False, photo_image)
 root.title(f"pefero {g.host} {g.port}")
 
 # define a normal and bold monospace font
-font_normal = font.Font(family="monospace")
-font_bold = font.Font(family="monospace", weight=font.BOLD)
+font_normal = font.nametofont("TkFixedFont")
+font_normal.configure(size=12)
+font_bold = font.Font(
+    family=font_normal.cget("family"), size=font_normal.cget("size"), weight=font.BOLD
+)
 
 entry = AutocompleteEntry(
     root, textvariable=tk.StringVar(), font=font_normal, completevalues=eggdrop_commands
