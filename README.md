@@ -48,7 +48,7 @@ https://codeberg.org/mortmann/pefero
 
 **Links and Thanks to everyone involved there**
 
-https://www.eggheads.org\
+https://www.eggheads.org \
 Mitja Martini, Russell Adams, RedFantom and https://github.com/TkinterEP/ttkwidgets for https://github.com/TkinterEP/ttkwidgets/blob/master/ttkwidgets/autocomplete/autocomplete_entry.py
 
 Enjoy,\
