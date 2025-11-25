@@ -185,6 +185,7 @@ class g:
     tls = False
     fingerprint_want = None
     workaround_1849 = True  # https://github.com/eggheads/eggdrop/pull/1849
+    fastpoll = True
     certfile = None
     keyfile = None
     host = None
@@ -443,7 +444,12 @@ def socketloop():
             entry.insert(tk.INSERT, "Connection closed")
             entry.configure(state="disabled")
             return
-    root.after(100, socketloop)
+    if g.fastpoll:
+        root.after(10, socketloop)
+        if not g.handshake:
+            g.fastpoll = False
+    else:
+        root.after(100, socketloop)
 
 
 # getopt
