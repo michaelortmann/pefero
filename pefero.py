@@ -350,7 +350,7 @@ def socketloop():
                 raise ConnectionError("connection closed")
 
             alldata += data
-        except (BlockingIOError, ssl.SSLWantReadError, ConnectionError) as err:
+        except (BlockingIOError, ssl.SSLWantReadError):
             if alldata:
                 text = statusline.cget("text")
                 if g.handshake:
@@ -436,13 +436,13 @@ def socketloop():
                         scrolled_text.insert(tk.END, text, "bold")
                     scrolled_text.configure(state=tk.DISABLED)
                 scrolled_text.see(tk.END)
-            if isinstance(err, ConnectionError):
-                entry.delete(0, tk.END)
-                entry.configure(show="")
-                entry.insert(tk.INSERT, "Connection closed")
-                entry.configure(state="disabled")
-                return
             break
+        except (ConnectionError, ssl.SSLEOFError):
+            entry.delete(0, tk.END)
+            entry.configure(show="")
+            entry.insert(tk.INSERT, "Connection closed")
+            entry.configure(state="disabled")
+            return
     root.after(100, socketloop)
 
 
