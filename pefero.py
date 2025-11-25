@@ -303,17 +303,17 @@ def key_up(event):
         g.history_cursor -= 1
         entry.delete(0, tk.END)
         entry.insert(tk.INSERT, g.history[g.history_cursor])
-    return
 
 
 # callback for up key in entry widget, cycle through history buffer
 def key_down(event):
-    g.history_cursor
     if (g.history_cursor + 1) < g.history_len:
         g.history_cursor += 1
         entry.delete(0, tk.END)
         entry.insert(tk.INSERT, g.history[g.history_cursor])
-    return
+    elif (g.history_cursor + 1) == g.history_len:
+        g.history_cursor += 1
+        entry.delete(0, tk.END)
 
 
 # callback for tab key in entry widget, disable focus change
