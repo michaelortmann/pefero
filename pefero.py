@@ -15,7 +15,7 @@ from tkinter import font, scrolledtext, ttk
 
 # https://github.com/TkinterEP/ttkwidgets/blob/ebaa7d412e432453b4a65b53d005dd8f8e4651ca/ttkwidgets/autocomplete/autocomplete_entry.py
 
-tk_umlauts = [
+tk_umlauts = (
     "odiaeresis",
     "adiaeresis",
     "udiaeresis",
@@ -23,7 +23,7 @@ tk_umlauts = [
     "Adiaeresis",
     "Udiaeresis",
     "ssharp",
-]
+)
 
 
 class AutocompleteEntry(ttk.Entry):
