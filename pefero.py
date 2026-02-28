@@ -370,6 +370,7 @@ def socketloop():
                                     text=f"{text} tls={sock.version()} fingerprint=verified"
                                 )
                             else:
+                                sock.close()
                                 scrolled_text.configure(state=tk.NORMAL)
                                 scrolled_text.insert(
                                     tk.END,
