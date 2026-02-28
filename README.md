@@ -40,7 +40,7 @@ Usage: ./pefero.py [OPTION]... HOST
 **License**
 
 MIT License\
-Copyright (c) 2025 Michael Ortmann
+Copyright (c) 2025 - 2026 Michael Ortmann
 
 **Website**
 

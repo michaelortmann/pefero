@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2025 Michael Ortmann
+# Copyright (c) 2025 - 2026 Michael Ortmann
 # We use ruff as a code formatter to keep the code style consistent (and to
 # avoid off-topic discussions)
 import getopt
