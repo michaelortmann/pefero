@@ -565,7 +565,7 @@ entry.bind("<Tab>", key_tab)
 entry.focus()
 
 statusline = ttk.Label(
-    root, text=f"connection: host={g.host} port={g.port}", font=font_normal
+    root, text=f"{g.host}:{g.port}", font=font_normal
 )
 statusline.pack(fill=tk.X, side=tk.BOTTOM)
 
