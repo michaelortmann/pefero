@@ -5,11 +5,13 @@
 # avoid off-topic discussions)
 import getopt
 import hashlib
+from pathlib import Path
 import socket
 import ssl
 import sys
 import tkinter as tk
 from tkinter import font, scrolledtext, ttk
+import tomllib
 
 ######## AutocompleteEntry ########
 
@@ -188,8 +190,8 @@ class g:
     fastpoll = True
     certfile = None
     keyfile = None
-    host = None
-    port = 3333
+    host = "127.1"
+    port = "3333"
 
 
 eggdrop_commands = [  # for autocompletion
@@ -453,12 +455,38 @@ def socketloop():
         root.after(100, socketloop)
 
 
+if len(sys.argv) == 2:
+    botname = sys.argv[1]
+    if (len(botname) > 0) and botname[0] != "-":
+        home = Path.home()
+        path = home.joinpath(".config", "pefero", "pefero.toml")
+        try:
+            with path.open("rb") as f:
+                data = tomllib.load(f)
+                if botname in data:
+                    data = data[botname]
+                    if "host" in data:
+                        g.host = data["host"]
+                    if "port" in data:
+                        g.port = data["port"]
+                    if "cert" in data:
+                        g.certfile = data["cert"]
+                    if "key" in data:
+                        g.keyfile = data["key"]
+                    if "fingerprint" in data:
+                        g.fingerprint_want = data["fingerprint"]
+                    if "user" in data:
+                        g.user = data["user"]
+        except FileNotFoundError as e:
+            print(e)
+            sys.exit(1)  # EXIT_FAILURE
+
 # getopt
 
 try:
     opts, args = getopt.getopt(
         sys.argv[1:],
-        "p:c:k:f:l:hv",
+        "H:p:c:k:f:l:hv",
         ["port=", "cert=", "key=", "fingerprint=", "user=", "help", "version"],
     )
 except getopt.GetoptError as e:
@@ -466,12 +494,10 @@ except getopt.GetoptError as e:
     sys.exit(1)  # EXIT_FAILURE
 
 for opt, arg in opts:
-    if opt in ("-p", "--port"):
-        if arg.startswith("+"):
-            g.tls = True
-            g.port = int(arg[1:])
-        else:
-            g.port = int(arg)
+    if opt in ("-H", "--host"):
+        g.host = arg
+    elif opt in ("-p", "--port"):
+        g.port = arg
     elif opt in ("-c", "--cert"):
         g.certfile = arg
     elif opt in ("-k", "--key"):
@@ -482,8 +508,14 @@ for opt, arg in opts:
         g.user = arg
     elif opt in ("-h", "--help"):
         print(
-            f"Usage: {sys.argv[0]} [OPTION]... HOST\n"
+            f"Usage: {sys.argv[0]} [BOTNAME]\n"
             "\n"
+            "  This will use section BOTNAME from $HOME/.config/pefero/pefero.toml\n"
+            "\n"
+            f"Usage: {sys.argv[0]} [OPTION]...\n"
+            "\n"
+            "  -H, --host=HOST        host\n"
+            "                         default 127.1\n"
             "  -p, --port=PORT        port\n"
             "                         default 3333\n"
             "                         prefix with + to enable TLS\n"
@@ -507,14 +539,11 @@ for opt, arg in opts:
         )
         sys.exit()
 
-if len(args) == 0:
-    print(
-        f"missing host\nTry '{sys.argv[0]} --help' for more information.",
-        file=sys.stderr,
-    )
-    sys.exit(1)  # EXIT_FAILURE
-
-g.host = args[0]
+if g.port.startswith("+"):
+    g.tls = True
+    g.port = int(g.port[1:])
+else:
+    g.port = int(g.port)
 
 # init unblocking io sock
 
@@ -565,9 +594,7 @@ entry.bind("<Down>", key_down)
 entry.bind("<Tab>", key_tab)
 entry.focus()
 
-statusline = ttk.Label(
-    root, text=f"{g.host}:{g.port}", font=font_normal
-)
+statusline = ttk.Label(root, text=f"{g.host}:{g.port}", font=font_normal)
 statusline.pack(fill=tk.X, side=tk.BOTTOM)
 
 scrolled_text = scrolledtext.ScrolledText(root, font=font_normal, state=tk.DISABLED)

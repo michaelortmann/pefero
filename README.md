@@ -9,12 +9,20 @@
 - CertFP (tls certificate authentication)
 - Certificate pinning (fingerprint verification)
 - automatic login
+- options as pefero.toml or as command line arguments
+- single python script without external python libraries
 
 **Usage**
 
 ```
-Usage: ./pefero.py [OPTION]... HOST
+Usage: ./pefero.py [BOTNAME]
 
+  This will use section BOTNAME from $HOME/.config/pefero/pefero.toml
+
+Usage: ./pefero.py [OPTION]...
+
+  -H, --host=HOST        host
+                         default 127.1
   -p, --port=PORT        port
                          default 3333
                          prefix with + to enable TLS
@@ -29,10 +37,30 @@ Usage: ./pefero.py [OPTION]... HOST
   -v, --version          output version information and exit
 ```
 
-**Example**
+**Example with botname**
 
 ```
-./pefero.py -p +5555 -c testuser.crt -k testuser.key -f DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF -l testuser localhost
+./pefero.py testbot
+```
+$HOME/.config/pefero/pefero.toml:
+```
+[testbot]
+host = "localhost"
+port = "+5555"
+cert = "testuser.crt"
+key = "testuser.key"
+fingerprint = "DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF"
+user = "testuser"
+
+[testbot2]
+host = "localhost"
+port = "3333"
+```
+
+**Example with options**
+
+```
+./pefero.py -H localhost -p +5555 -c testuser.crt -k testuser.key -f DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF -l testuser
 ```
 
 ![screenshot](screenshot.png)
