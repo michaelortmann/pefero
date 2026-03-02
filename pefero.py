@@ -476,6 +476,8 @@ if len(sys.argv) == 2:
                         g.keyfile = data["key"]
                     if "fingerprint" in data:
                         g.fingerprint_want = data["fingerprint"]
+                    if "method" in data:
+                        g.method = data["method"]
                     if "user" in data:
                         g.user = data["user"]
         except FileNotFoundError as e:

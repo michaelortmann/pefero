@@ -53,6 +53,7 @@ port = "+5555"
 cert = "testuser.crt"
 key = "testuser.key"
 fingerprint = "DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF"
+method = "sha256"
 user = "testuser"
 
 [testbot2]
