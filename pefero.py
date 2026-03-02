@@ -487,7 +487,7 @@ try:
     opts, args = getopt.getopt(
         sys.argv[1:],
         "H:p:c:k:f:l:hv",
-        ["port=", "cert=", "key=", "fingerprint=", "user=", "help", "version"],
+        ["host=", "port=", "cert=", "key=", "fingerprint=", "user=", "help", "version"],
     )
 except getopt.GetoptError as e:
     print(f"{e}\nTry '{sys.argv[0]} --help' for more information.", file=sys.stderr)
