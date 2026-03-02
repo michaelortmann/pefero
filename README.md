@@ -6,8 +6,8 @@
 - Plain and TLS connection
 - History
 - Eggdrop command autocompletion
-- CertFP (tls certificate authentication)
-- Certificate pinning (fingerprint verification)
+- CertFP (authenticates the client to the bot)
+- Certificate pinning (authenticates the bot to the client)
 - automatic login
 - options as pefero.toml or as command line arguments
 - single python script without external python libraries
@@ -26,12 +26,15 @@ Usage: ./pefero.py [OPTION]...
   -p, --port=PORT        port
                          default 3333
                          prefix with + to enable TLS
-  -c, --cert=FILE        use CertFP with TLS certificate FILE
-  -k, --key=FILE         use CertFP with TLS key FILE
-  -f, --fingerprint=HASH use certificate pinning
-                         verify eggdrop cert fingerprint equals sha256 HASH
+  -c, --cert=FILE        path to your public certificate file for CertFP
+                         CertFP authenticates the client to the bot
+  -k, --key=FILE         path to your private key file for CertFP
+  -f, --fingerprint=HASH bot's certificate fingerprint/hash for certificate pinning
+                         fingerprint authenticates the bot to the client
                          e.g.: DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF
                          see: openssl x509 -in eggdrop.crt -noout -fingerprint -sha256
+  -m, --method=HASHFUNC  fingerprint hash function
+                         default sha256
   -l, --user=USER        attempt automatic login as USER
   -h, --help             display this help and exit
   -v, --version          output version information and exit

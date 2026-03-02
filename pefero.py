@@ -186,6 +186,7 @@ class g:
     handshake = True
     tls = False
     fingerprint_want = None
+    method = "sha256"
     workaround_1849 = True  # https://github.com/eggheads/eggdrop/pull/1849
     fastpoll = True
     certfile = None
@@ -359,7 +360,7 @@ def socketloop():
                 if g.handshake:
                     if g.tls:
                         cert = sock.getpeercert(True)
-                        fingerprint = hashlib.sha256(cert).hexdigest()
+                        fingerprint = hashlib.new(g.method, cert).hexdigest()
                         fingerprint = ":".join(
                             fingerprint[i : i + 2]
                             for i in range(0, len(fingerprint), 2)
@@ -486,8 +487,17 @@ if len(sys.argv) == 2:
 try:
     opts, args = getopt.getopt(
         sys.argv[1:],
-        "H:p:c:k:f:l:hv",
-        ["host=", "port=", "cert=", "key=", "fingerprint=", "user=", "help", "version"],
+        "H:p:c:k:f:m:l:hv",
+        [
+            "host=",
+            "port=",
+            "cert=",
+            "key=",
+            "fingerprint=",
+            "method=user=",
+            "help",
+            "version",
+        ],
     )
 except getopt.GetoptError as e:
     print(f"{e}\nTry '{sys.argv[0]} --help' for more information.", file=sys.stderr)
@@ -504,6 +514,8 @@ for opt, arg in opts:
         g.keyfile = arg
     elif opt in ("-f", "--fingerprint"):
         g.fingerprint_want = arg
+    elif opt in ("-m", "--method"):
+        g.method = arg
     elif opt in ("-l", "--user"):
         g.user = arg
     elif opt in ("-h", "--help"):
@@ -519,12 +531,15 @@ for opt, arg in opts:
             "  -p, --port=PORT        port\n"
             "                         default 3333\n"
             "                         prefix with + to enable TLS\n"
-            "  -c, --cert=FILE        use CertFP with TLS certificate FILE\n"
-            "  -k, --key=FILE         use CertFP with TLS key FILE\n"
-            "  -f, --fingerprint=HASH use certificate pinning\n"
-            "                         verify eggdrop cert fingerprint equals sha256 HASH\n"
+            "  -c, --cert=FILE        path to your public certificate file for CertFP\n"
+            "                         CertFP authenticates the client to the bot\n"
+            "  -k, --key=FILE         path to your private key file for CertFP\n"
+            "  -f, --fingerprint=HASH bot's certificate fingerprint/hash for certificate pinning\n"
+            "                         fingerprint authenticates the bot to the client\n"
             "                         e.g.: DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF:DE:AD:BE:EF\n"
             "                         see: openssl x509 -in eggdrop.crt -noout -fingerprint -sha256\n"
+            "  -m, --method=HASHFUNC  fingerprint hash function\n"
+            "                         default sha256\n"
             "  -l, --user=USER        attempt automatic login as USER\n"
             "  -h, --help             display this help and exit\n"
             "  -v, --version          output version information and exit"
