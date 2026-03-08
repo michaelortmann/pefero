@@ -191,7 +191,7 @@ class g:
     fastpoll = True
     certfile = None
     keyfile = None
-    host = "127.1"
+    host = "127.0.0.1"
     port = "3333"
 
 
@@ -529,7 +529,7 @@ for opt, arg in opts:
             f"Usage: {sys.argv[0]} [OPTION]...\n"
             "\n"
             "  -H, --host=HOST        host\n"
-            "                         default 127.1\n"
+            "                         default 127.0.0.1\n"
             "  -p, --port=PORT        port\n"
             "                         default 3333\n"
             "                         prefix with + to enable TLS\n"

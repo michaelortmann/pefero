@@ -22,7 +22,7 @@ Usage: ./pefero.py [BOTNAME]
 Usage: ./pefero.py [OPTION]...
 
   -H, --host=HOST        host
-                         default 127.1
+                         default 127.0.0.1
   -p, --port=PORT        port
                          default 3333
                          prefix with + to enable TLS
